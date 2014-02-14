@@ -1,0 +1,12 @@
+config =
+  trello:
+    api: 'https://api.trello.com/1'
+    key: 'your trello key'
+    token: 'your trello token'
+  projects: [
+    {
+      name: 'github project name'
+      boardId: 'id board on trello'
+    }
+  ]
+

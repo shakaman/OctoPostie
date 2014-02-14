@@ -1,0 +1,5 @@
+.DS_Store
+config/dev/config.coffee
+config/dev/payload.coffee
+node_modules/
+server/app.js
