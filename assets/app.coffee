@@ -7,7 +7,7 @@ express = require 'express'
 app = express()
 app.use express.json()
 
-app.post '/payload', (req, res) ->
+app.post '/', (req, res) ->
   res.send {}
   @project = req.body.repository.name
   @commits = req.body.commits
@@ -43,6 +43,6 @@ addComment = (id, msg) ->
     console.log '200 ok' if (response.statusCode == 201)
     return
 
-app.listen 4567
-console.log 'Listening on port 4567'
+app.listen 4567, ->
+  console.log 'Listening on port 4567'
 
