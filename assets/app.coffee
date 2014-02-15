@@ -1,17 +1,19 @@
 #= require config
-#= require payload
 
 rest = require 'restler'
 express = require 'express'
 
 app = express()
 app.use express.json()
+app.use express.urlencoded()
 
 app.post '/', (req, res) ->
   res.send {}
-  @project = req.body.repository.name
-  @commits = req.body.commits
-  getCards()
+  payload = JSON.parse(req.body?.payload)
+  if payload
+    @project = payload.repository.name
+    @commits = payload.commits
+    getCards()
 
 
 getCards = ->
@@ -28,7 +30,11 @@ getBoard = ->
 
 
 parseCommit = (commit) ->
-  num = parseInt(commit.message.match(/^#([0-9]+)/)[1], 10)
+  num = commit.message.match(/#([0-9]+)/)
+  if num
+    num = parseInt(num[1], 10)
+  else
+    return
   for card in @cards
     shortLink = card.shortLink if card.idShort is num
   addComment shortLink, commit.url
