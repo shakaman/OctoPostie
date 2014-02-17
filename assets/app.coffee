@@ -9,8 +9,8 @@ app.use express.urlencoded()
 
 app.post '/', (req, res) ->
   res.send {}
-  payload = JSON.parse(req.body?.payload)
-  if payload
+  payload = req.body
+  if payload.commits?
     @project = payload.repository.name
     @commits = payload.commits
     getCards()
@@ -33,11 +33,9 @@ parseCommit = (commit) ->
   num = commit.message.match(/#([0-9]+)/)
   if num
     num = parseInt(num[1], 10)
-  else
-    return
-  for card in @cards
-    shortLink = card.shortLink if card.idShort is num
-  addComment shortLink, commit.url
+    for card in @cards
+      shortLink = card.shortLink if card.idShort is num
+    addComment shortLink, commit.url
 
 
 addComment = (id, msg) ->
