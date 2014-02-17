@@ -5,8 +5,8 @@ config =
     token: 'your trello token'
   projects: [
     {
-      name: 'github project name'
-      boardId: 'id board on trello'
+      github: 'github project name'
+      trello: 'id board on trello'
     }
   ]
 
