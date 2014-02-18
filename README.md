@@ -1,5 +1,5 @@
-# GithubToTrello
-===============
+# GithubToTrello [![Built with Grunt](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com/)
+================
 
 Simple app to bind github's commit to trello board.
 You can show payload on https://gist.github.com/gjtorikian/5171861

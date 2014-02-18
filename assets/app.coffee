@@ -10,8 +10,8 @@ app.use express.urlencoded()
 
 app.post '/', (req, res) ->
   res.send {}
-  payload = JSON.parse req.body?.payload
-  if payload
+  payload = req.body
+  if payload.commits?
     project = projects.where github: payload.repository.name
     commits = new Commits payload.commits
     cards = project.board.cards
@@ -82,7 +82,6 @@ class Card
         text: msg
     ).on 'complete', (data, response) ->
       console.log '200 ok' if (response.statusCode == 201)
-
 
 app.listen 4567, ->
   console.log 'Listening on port 4567'
