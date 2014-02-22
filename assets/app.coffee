@@ -1,52 +1,81 @@
-#= require config
+#= require 'config'
 
 rest = require 'restler'
 express = require 'express'
+Q = require 'q'
+
 
 app = express()
 app.use express.json()
 app.use express.urlencoded()
 
+
 app.post '/', (req, res) ->
   res.send {}
+  # return unless ready
   payload = req.body
-  if payload.commits?
-    @project = payload.repository.name
-    @commits = payload.commits
-    getCards()
+  if payload.commits? # and checkValidity()
+    projectName = payload.repository.name
+    commits = payload.commits
+    boardId = getBoardId(projectName)
+    return unless boardId
+    getCards(boardId).then (cards)->
+      for commit in commits
+        cardId = getCardId(cards, commit)
+        continue unless cardId
+        commentCard(cardId, commit)
 
 
-getCards = ->
-  board = getBoard()
-  url = "#{config.trello.api}/boards/#{board}/cards/?key=#{config.trello.key}&token=#{config.trello.token}"
+# Initialize configuration
+initialize = ->
+  @projects = config.projects
+  @trello = config.trello
+  getConfig()
+
+
+# Get lists and members for all projects in config
+getConfig = ->
+  for project, i in @projects
+    urlLists = "#{@trello.api}/boards/#{project.boardId}?members=all&lists=all&key=#{@trello.key}&token=#{@trello.token}"
+    rest.get(urlLists).on 'complete', do (i) -> (data)=>
+      @projects[i].lists = data.lists
+      @projects[i].members = data.members
+
+
+# Get all cards for a board
+getCards = (boardId) ->
+  url = "#{@trello.api}/boards/#{boardId}/cards/?fields=idShort,shortLink&key=#{@trello.key}&token=#{@trello.token}"
+  defer = Q.defer()
   rest.get(url).on 'complete', (data) =>
-    @cards = data
-    parseCommit commit for commit in @commits
+    defer.resolve data
+  defer.promise
 
 
-getBoard = ->
-  for project in config.projects
-    return project.boardId if project.name is @project
+# Retrieve card id from commit message
+getCardId = (cards, commit) ->
+  id = commit.message.match(/#([0-9]+)/)
+  return unless id
+  id = parseInt(id[1], 10)
+  for card in cards
+    return card.shortLink if card.idShort is id
 
 
-parseCommit = (commit) ->
-  num = commit.message.match(/#([0-9]+)/)
-  if num
-    num = parseInt(num[1], 10)
-    for card in @cards
-      shortLink = card.shortLink if card.idShort is num
-    addComment shortLink, commit.url
-
-
-addComment = (id, msg) ->
-  url = "#{config.trello.api}/cards/#{id}/actions/comments?key=#{config.trello.key}&token=#{config.trello.token}"
+# Post comment on trello card with commit link
+commentCard = (cardId, commit) ->
+  url = "#{@trello.api}/cards/#{cardId}/actions/comments?key=#{@trello.key}&token=#{@trello.token}"
+  msg = "#{commit.committer.username}: #{commit.url}"
   rest.post(url,
     data:
       text: msg
-  ).on 'complete', (data, response) ->
-    console.log '200 ok' if (response.statusCode == 201)
-    return
+  )
 
-app.listen 4567, ->
-  console.log 'Listening on port 4567'
+# Retrieve board id using its name
+getBoardId = (name)->
+  for project in @projects
+    return project.boardId if name is project.name
+
+
+initialize()
+app.listen config.port, ->
+  console.log "Listening on port #{config.port}"
 
