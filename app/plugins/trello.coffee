@@ -1,3 +1,4 @@
+config = require "#{__dirname}/../config/config"
 Q = require 'q'
 rest = require 'restler'
 
@@ -61,3 +62,7 @@ getBoardId = (name)->
   for project in @projects
     return project.boardId if name is project.name
 
+
+module.exports =
+  initialize: initialize
+  action: action
