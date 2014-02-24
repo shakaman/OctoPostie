@@ -28,12 +28,16 @@ module.exports = (grunt) ->
 
     dirs:
       app:  'app/'
-      dist: 'dist/'
+      plugins: 'app/plugins/'
+      config: "config/#{ENV}/"
+      distApp: 'dist/'
+      distPlugins: 'dist/plugins/'
+      distConfig: "dist/config/"
       tmp:  'tmp/'
 
     clean:
       all: [
-        '<%= dirs.dist %>'
+        '<%= dirs.distApp %>'
         '<%= dirs.tmp %>'
       ]
       tmp: ['<%= dirs.tmp %>']
@@ -42,38 +46,27 @@ module.exports = (grunt) ->
       back: ['packages.json']
 
     coffeelint:
-      files: ['Gruntfile.coffee', 'assets/**/*.coffee', 'config/**/*.coffee']
+      files: ['Gruntfile.coffee', '<%= dirs.app %>/**/*.coffee', 'config/**/*.coffee']
       options:
         no_backticks:
           level: 'warn'
         max_line_length:
           level: 'warn'
 
-    mince:
-      dev:
-        src: 'app.js'
-        include: ['assets/', 'config/dev/']
-        dest: '<%= dirs.dist %>app.js'
-      prod:
-        src: 'app.js'
-        include: ['assets/', 'config/prod/']
-        dest: '<%= dirs.tmp %>app.js'
-
     coffee:
       app:
+        files:
+          '<%= dirs.distApp %>app.js' : '<%= dirs.app %>app.coffee'
+      config:
+        files:
+          '<%= dirs.distConfig %>config.js' : '<%= dirs.config %>config.coffee'
+      plugins:
         expand: true
         flatten: true
-        cwd: 'app/'
+        cwd: '<%= dirs.plugins %>'
         src: ['*.coffee']
-        dest: 'dist'
-        ext: 'js'
-
-    uglify:
-      options:
-        banner: '<%= meta.banner %>'
-      dist:
-        src: '<%= dirs.tmp %>app.js'
-        dest: '<%= dirs.dist %>app.js'
+        dest: '<%= dirs.distPlugins %>'
+        ext: '.js'
 
     watch:
       files: [
@@ -82,27 +75,22 @@ module.exports = (grunt) ->
       tasks: [
         'jshint'
         'coffeelint'
-        'clean:all'
-        'mince:' + ENV
+        #'clean:all'
+        'coffee'
       ]
 
   # Default task.
   grunt.registerTask 'default', [
     'jshint'
     'coffeelint'
-    'clean:all'
-    #'mince:' + ENV
-    'coffee:app'
-    'clean:tmp'
+    #'clean:all'
+    'coffee'
   ]
 
   # Deploy task.
   grunt.registerTask 'deploy', [
     'jshint'
     'coffeelint'
-    'clean:all'
-    'mince:' + ENV
-    'copy'
-    'uglify'
-    'clean:tmp'
+    #'clean:all'
+    'coffee'
   ]
