@@ -1,5 +1,3 @@
-#= require 'config'
-
 express = require 'express'
 fs = require 'fs'
 
@@ -17,8 +15,9 @@ app.post '/', (req, res) ->
 
 # Initialize configuration
 initialize = ->
-  @plugins = for path in fs.readdirSync './plugins'
-    require path
+  path = "#{__dirname}/plugins"
+  @plugins = for file in fs.readdirSync path
+    require "#{path}/#{file}"
   plugin.initialize() for plugin in @plugins
 
 
