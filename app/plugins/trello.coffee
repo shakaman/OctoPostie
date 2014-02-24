@@ -1,32 +1,6 @@
-#= require 'config'
-
-rest = require 'restler'
-express = require 'express'
 Q = require 'q'
+rest = require 'restler'
 
-
-app = express()
-app.use express.json()
-app.use express.urlencoded()
-
-
-app.post '/', (req, res) ->
-  res.send {}
-  # return unless ready
-  payload = req.body
-  if payload.commits? # and checkValidity()
-    projectName = payload.repository.name
-    commits = payload.commits
-    boardId = getBoardId(projectName)
-    return unless boardId
-    getCards(boardId).then (cards)->
-      for commit in commits
-        cardId = getCardId(cards, commit)
-        continue unless cardId
-        commentCard(cardId, commit)
-
-
-# Initialize configuration
 initialize = ->
   @projects = config.projects
   @trello = config.trello
@@ -40,6 +14,19 @@ getConfig = ->
     rest.get(urlLists).on 'complete', do (i) -> (data)=>
       @projects[i].lists = data.lists
       @projects[i].members = data.members
+
+
+action = (payload)->
+  if payload.commits? # and checkValidity()
+    projectName = payload.repository.name
+    commits = payload.commits
+    boardId = getBoardId(projectName)
+    return unless boardId
+    getCards(boardId).then (cards)->
+      for commit in commits
+        cardId = getCardId(cards, commit)
+        continue unless cardId
+        commentCard(cardId, commit)
 
 
 # Get all cards for a board
@@ -73,9 +60,4 @@ commentCard = (cardId, commit) ->
 getBoardId = (name)->
   for project in @projects
     return project.boardId if name is project.name
-
-
-initialize()
-app.listen config.port, ->
-  console.log "Listening on port #{config.port}"
 

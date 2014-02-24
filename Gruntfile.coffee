@@ -27,13 +27,13 @@ module.exports = (grunt) ->
       banner: '/*! <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy") %> - Copyright shakaman (c) */\n'
 
     dirs:
-      assets: 'assets/'
-      server: 'server/'
-      tmp:    'tmp/'
+      app:  'app/'
+      dist: 'dist/'
+      tmp:  'tmp/'
 
     clean:
       all: [
-        '<%= dirs.server %>'
+        '<%= dirs.dist %>'
         '<%= dirs.tmp %>'
       ]
       tmp: ['<%= dirs.tmp %>']
@@ -53,18 +53,27 @@ module.exports = (grunt) ->
       dev:
         src: 'app.js'
         include: ['assets/', 'config/dev/']
-        dest: '<%= dirs.server %>app.js'
+        dest: '<%= dirs.dist %>app.js'
       prod:
         src: 'app.js'
         include: ['assets/', 'config/prod/']
         dest: '<%= dirs.tmp %>app.js'
+
+    coffee:
+      app:
+        expand: true
+        flatten: true
+        cwd: 'app/'
+        src: ['*.coffee']
+        dest: 'dist'
+        ext: 'js'
 
     uglify:
       options:
         banner: '<%= meta.banner %>'
       dist:
         src: '<%= dirs.tmp %>app.js'
-        dest: '<%= dirs.server %>app.js'
+        dest: '<%= dirs.dist %>app.js'
 
     watch:
       files: [
@@ -82,7 +91,8 @@ module.exports = (grunt) ->
     'jshint'
     'coffeelint'
     'clean:all'
-    'mince:' + ENV
+    #'mince:' + ENV
+    'coffee:app'
     'clean:tmp'
   ]
 
@@ -92,7 +102,6 @@ module.exports = (grunt) ->
     'coffeelint'
     'clean:all'
     'mince:' + ENV
-    'jade'
     'copy'
     'uglify'
     'clean:tmp'
