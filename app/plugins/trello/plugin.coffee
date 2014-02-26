@@ -1,11 +1,12 @@
 Q = require 'q'
 rest = require 'restler'
 
-# Specific config file for this plugin
-config = require "#{__dirname}/config"
 
 class Trello
   initialize: ->
+    # Specific config file for this plugin
+    config = require "#{__dirname}/config"
+
     @trello = config.trello
     @projects = config.projects
     @getConfig()
