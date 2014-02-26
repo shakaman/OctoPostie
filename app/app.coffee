@@ -19,7 +19,7 @@ initialize = ->
   path = "#{__dirname}/plugins"
   @plugins = for file in fs.readdirSync path
     new (require "#{path}/#{file}/plugin")()
-  plugin.initialize() for plugin in @plugins
+  plugin.initialize?() for plugin in @plugins
 
 
 initialize()
