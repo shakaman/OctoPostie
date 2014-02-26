@@ -1,5 +1,4 @@
 .DS_Store
-config/dev/config.coffee
-config/dev/payload.coffee
+app/plugins/**/config.coffee
 node_modules/
-server/app.js
+dist/

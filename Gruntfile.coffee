@@ -29,10 +29,8 @@ module.exports = (grunt) ->
     dirs:
       app:  'app/'
       plugins: 'app/plugins/'
-      config: "config/#{ENV}/"
       distApp: 'dist/'
       distPlugins: 'dist/plugins/'
-      distConfig: "dist/config/"
       tmp:  'tmp/'
 
     clean:
@@ -57,14 +55,10 @@ module.exports = (grunt) ->
       app:
         files:
           '<%= dirs.distApp %>app.js' : '<%= dirs.app %>app.coffee'
-      config:
-        files:
-          '<%= dirs.distConfig %>config.js' : '<%= dirs.config %>config.coffee'
       plugins:
         expand: true
-        flatten: true
         cwd: '<%= dirs.plugins %>'
-        src: ['*.coffee']
+        src: ['*/**.coffee']
         dest: '<%= dirs.distPlugins %>'
         ext: '.js'
 
