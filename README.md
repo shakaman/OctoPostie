@@ -1,4 +1,4 @@
-# GithubToTrello [![Built with Grunt](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com/)[![Build Status](https://travis-ci.org/shakaman/GithubToTrello.png)](https://travis-ci.org/shakaman/GithubToTrello)[![Dependency Status](https://david-dm.org/shakaman/GithubToTrello.png)](https://david-dm.org/shakaman/GithubToTrello)
+# GithubToTrello [![Built with Grunt](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com/) [![Build Status](https://travis-ci.org/shakaman/GithubToTrello.png)](https://travis-ci.org/shakaman/GithubToTrello) [![Dependency Status](https://david-dm.org/shakaman/GithubToTrello.png)](https://david-dm.org/shakaman/GithubToTrello)
 ================
 
 Simple app to bind github's commit to trello board.

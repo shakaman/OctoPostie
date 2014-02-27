@@ -26,7 +26,7 @@
   },
   "dependencies": {
     "express": "3.x",
-    "restler": "3.1.0",
+    "restler": "3.2.0",
     "q": "~1.0.0"
   }
 }
