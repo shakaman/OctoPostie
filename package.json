@@ -8,7 +8,7 @@
     "chpill"
   ],
   "scripts": {
-    "test": "mocha --compilers coffee:coffee-script test/**/*.coffee"
+    "test": "mocha --compilers coffee:coffee-script test/plugins/**/*.coffee"
   },
   "devDependencies": {
     "grunt": "~0.4.1",
