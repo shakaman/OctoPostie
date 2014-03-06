@@ -6,7 +6,7 @@ module.exports = (grunt) ->
   # Load tasks
   require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks)
 
-  ENVS = ['dev', 'prod']
+  ENVS = ['dev', 'test', 'prod']
   ENV = grunt.option('env') || ENVS[0]
 
   if ENVS.indexOf(ENV) is -1
@@ -27,24 +27,23 @@ module.exports = (grunt) ->
       banner: '/*! <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy") %> - Copyright shakaman (c) */\n'
 
     dirs:
-      app:  'app/'
-      plugins: 'app/plugins/'
-      distApp: 'dist/'
-      distPlugins: 'dist/plugins/'
+      src:  'src/'
+      dist: 'dist/'
+      test:  'test/'
       tmp:  'tmp/'
 
     clean:
       all: [
-        '<%= dirs.distApp %>'
+        '<%= dirs.dist %>'
         '<%= dirs.tmp %>'
       ]
-      tmp: ['<%= dirs.tmp %>']
+      test: ['<%= dirs.tmp %>/*']
 
     jshint:
       back: ['packages.json']
 
     coffeelint:
-      files: ['Gruntfile.coffee', '<%= dirs.app %>/**/*.coffee', 'config/**/*.coffee']
+      files: ['Gruntfile.coffee', '<%= dirs.src %>/**/*.coffee', '<%= dirs.test %>/**/*.coffee']
       options:
         no_backticks:
           level: 'warn'
@@ -53,14 +52,25 @@ module.exports = (grunt) ->
 
     coffee:
       app:
-        files:
-          '<%= dirs.distApp %>app.js' : '<%= dirs.app %>app.coffee'
-      plugins:
         expand: true
-        cwd: '<%= dirs.plugins %>'
-        src: ['*/**.coffee']
-        dest: '<%= dirs.distPlugins %>'
+        cwd: '<%= dirs.src %>'
+        src: ['**/*.coffee']
+        dest: '<%= dirs.dist %>'
         ext: '.js'
+      test:
+        expand: true
+        cwd: '<%= dirs.src %>'
+        src: ['**/*.coffee']
+        dest: '<%= dirs.tmp %>'
+        ext: '.js'
+
+
+    mochaTest:
+      test:
+        options:
+          reporter: 'spec'
+          require: 'coffee-script/register'
+      src: ['test/**/*.coffee']
 
     watch:
       files: [
@@ -69,22 +79,20 @@ module.exports = (grunt) ->
       tasks: [
         'jshint'
         'coffeelint'
-        #'clean:all'
         'coffee'
+        'test'
       ]
 
   # Default task.
   grunt.registerTask 'default', [
     'jshint'
     'coffeelint'
-    #'clean:all'
     'coffee'
   ]
 
-  # Deploy task.
-  grunt.registerTask 'deploy', [
-    'jshint'
-    'coffeelint'
-    #'clean:all'
-    'coffee'
+  # Test task.
+  grunt.registerTask 'test', [
+    'coffee:test'
+    'mochaTest'
+    'clean:test'
   ]

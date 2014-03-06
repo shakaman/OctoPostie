@@ -4,8 +4,9 @@ rest = require 'restler'
 
 class Trello
   initialize: ->
+    console.log 'initialize'
     # Specific config file for this plugin
-    config = require "#{__dirname}/config"
+    config = require "./config"
 
     @trello = config.trello
     @projects = config.projects
@@ -43,6 +44,7 @@ class Trello
 
   # Get all cards for a board
   getCards: (boardId) ->
+    console.log 'getConfig'
     url = @getUrl('cards', boardId)
     defer = Q.defer()
     rest.get(url).on 'complete', (data) ->
