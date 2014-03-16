@@ -1,10 +1,21 @@
-require 'chai'
+chai = require 'chai'
+sinon = require 'sinon'
+sinonChai = require 'sinon-chai'
+chai.should()
+chai.use(sinonChai)
+
 request = require 'supertest'
-nock = require 'nock'
+proxyquire = require 'proxyquire'
 
 describe 'App', ->
-  beforeEach ->
-    @app = require '../dist/app'
+
+  before ->
+    @app = proxyquire('../dist/app',
+      './config': {
+        port: 4567
+        plugins: []
+      }
+    )
 
   it 'Should initialize when required', ->
     

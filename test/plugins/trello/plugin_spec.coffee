@@ -1,4 +1,4 @@
-chai = require('chai')
+chai = require 'chai'
 sinon = require 'sinon'
 sinonChai = require 'sinon-chai'
 chai.should()

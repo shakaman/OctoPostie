@@ -9,22 +9,28 @@ app.use express.urlencoded()
 
 app.post '/', (req, res) ->
   res.send {}
-  # return unless ready
   payload = req.body
   plugin.action(payload) for plugin in @plugins
 
 
-# Initialize configuration
+# Load config file and initializes plugins
 initialize = ->
+  @config = require './config'
+  loadPlugins()
+  launchServer()
+
+
+# Load plugins
+loadPlugins = ->
   path = "#{__dirname}/plugins"
-  @plugins = for file in fs.readdirSync path
-    new (require "#{path}/#{file}/plugin")()
+  @plugins = for name in @config.plugins
+    new (require "#{path}/#{name}/plugin")()
   plugin.initialize?() for plugin in @plugins
+
+launchServer = ->
+  app.listen @config.port
+  console.log "Listening on port #{@config.port}"
 
 
 initialize()
-app.listen 4567, ->
-  console.log "Listening on port 4567"
-
-
 module.exports = app
