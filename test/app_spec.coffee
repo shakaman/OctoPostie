@@ -5,7 +5,7 @@ chai.should()
 chai.use(sinonChai)
 
 request = require 'supertest'
-proxyquire = require 'proxyquire'
+proxyquire = require('proxyquire').noCallThru()
 
 describe 'App', ->
 

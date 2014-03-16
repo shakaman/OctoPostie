@@ -1,7 +1,6 @@
 Q = require 'q'
 rest = require 'restler'
 
-
 class Trello
   initialize: ->
     # Specific config file for this plugin
