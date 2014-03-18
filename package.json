@@ -1,6 +1,6 @@
 {
-  "name": "githubToTrello",
-  "description": "Github webhook to trello",
+  "name": "OctoPostie",
+  "description": "Github webhook to various services",
   "version": "0.0.2",
   "private": true,
   "author": [
@@ -8,7 +8,7 @@
     "chpill"
   ],
   "scripts": {
-    "test": "mocha --compilers coffee:coffee-script/register test/**/*.coffee"
+    "test": "mocha --timeout 3000 --compilers coffee:coffee-script/register test/**/*.coffee"
   },
   "devDependencies": {
     "grunt": "~0.4.1",

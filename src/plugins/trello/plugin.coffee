@@ -11,8 +11,8 @@ class Trello
     @getConfig()
 
 
-  action: (payload)->
-    if payload.commits? # and checkValidity()
+  action: (@payload)->
+    if @payload.commits? and checkValidity()
       projectName = payload.repository.name
       commits = payload.commits
       boardId = @getBoardId(projectName)
@@ -26,11 +26,11 @@ class Trello
 
   # Get lists and members for all projects in config
   getConfig: ->
-    for project, i in @projects
+    @projects.forEach (project) =>
       url = @getUrl('lists', project.boardId)
-      rest.get(url).on 'complete', do (i, @projects)-> (data)=>
-        @projects[i].lists = data.lists
-        @projects[i].members = data.members
+      rest.get(url).on 'complete', (data)->
+        project.lists = data.lists
+        project.members = data.members
 
 
   getUrl: (type, id) ->
@@ -39,6 +39,11 @@ class Trello
       .replace(':id', id)
       .replace(':key', @trello.key)
       .replace(':token', @trello.token)
+
+
+  checkValidity: ->
+    @payload.ref.indexOf('master') > 0
+
 
   # Get all cards for a board
   getCards: (boardId) ->

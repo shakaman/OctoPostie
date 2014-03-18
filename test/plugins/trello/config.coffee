@@ -1,6 +1,6 @@
 config =
   trello:
-    api: 'https://api.trello.com/1'
+    api: 'http://api.trello.com/1'
     key: '123456789'
     token: '123456789'
     urls:
