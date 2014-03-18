@@ -12,11 +12,11 @@ module.exports = (grunt) ->
   if ENVS.indexOf(ENV) is -1
     grunt.fatal('The environment variable ' + ENV + ' is not supported.')
 
-  grunt.log.writeln ('***********************************************'.green)
-  grunt.log.writeln ('**             GithubToTrello                **'.green)
-  grunt.log.writeln ('**                                           **'.green)
-  grunt.log.writeln grunt.log.table([3, 13, 29, 2], ['**'.green, 'Environment: ', ENV.green, '**'.green])
-  grunt.log.writeln ('***********************************************'.green)
+  grunt.log.writeln ('*******************************************'.green)
+  grunt.log.writeln ('**             OctoPostie                **'.green)
+  grunt.log.writeln ('**                                       **'.green)
+  grunt.log.writeln grunt.log.table([3, 13, 25, 2], ['**'.green, 'Environment: ', ENV.green, '**'.green])
+  grunt.log.writeln ('*******************************************'.green)
 
 
   # Project configuration
