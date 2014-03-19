@@ -12,9 +12,9 @@ class Trello
 
 
   action: (@payload)->
-    if @payload.commits? and checkValidity()
-      projectName = payload.repository.name
-      commits = payload.commits
+    if @payload.commits? and @checkValidity()
+      projectName = @payload.repository.name
+      commits = @payload.commits
       boardId = @getBoardId(projectName)
       return unless boardId
       @getCards(boardId).then (cards)=>

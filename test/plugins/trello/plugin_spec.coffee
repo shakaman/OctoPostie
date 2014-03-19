@@ -3,12 +3,14 @@ sinon = require 'sinon'
 sinonChai = require 'sinon-chai'
 chai.should()
 chai.use(sinonChai)
+expect = require 'expect.js'
 nock = require 'nock'
 
 proxyquire = require('proxyquire').noCallThru()
 
 config = require './config'
 mock = require './mock'
+payload = require '../../payload'
 
 describe 'Plugin Trello', ->
   beforeEach ->
@@ -20,9 +22,9 @@ describe 'Plugin Trello', ->
       .filteringPath (path)->
         '/1/boards'
       .get('/1/boards')
-      .reply(200, mock[0])
+      .reply(200, mock.boards[0])
       .get('/1/boards')
-      .reply(200, mock[1])
+      .reply(200, mock.boards[1])
 
   afterEach ->
     nock.enableNetConnect()
@@ -58,8 +60,8 @@ describe 'Plugin Trello', ->
   describe 'getConfig', ->
     it 'Call trello api for each project', ->
       @trello.initialize()
-      @trello.projects.length.should.be.equal(2)
-      @trello.projects[0].lists.length.should.be.equal(3)
+      @trello.projects.should.have.length(2)
+      @trello.projects[0].lists.should.have.length(3)
       @trello.projects[0].lists[0].id.should.be.equal('listtodoboard1')
       @trello.projects[1].lists[0].id.should.be.equal('listtodoboard2')
 
@@ -96,12 +98,51 @@ describe 'Plugin Trello', ->
       @trello.getBoardId('project1').should.be.equal('boardId1')
 
 
+  describe 'getCards', ->
+    beforeEach (done)->
+      @trelloCards = nock('http://api.trello.com')
+        .filteringPath (path)->
+          '/1/cards'
+        .get('/1/cards')
+        .reply(200, mock.cards)
+      @trello.initialize()
+      @promise = @trello.getCards('boardId1').then (cards)=>
+        @cards = cards
+        done()
+
+    it 'Should have 8 cards when i call getCards', ->
+      @cards.should.have.length(8)
+
+
+  describe 'getCardId', ->
+    beforeEach ->
+      @trello.initialize()
+
+    it 'Should have a good cardId for a specific commit', ->
+      @trello.getCardId(mock.cards, payload.commits[1]).should.be.equal('EHm8BHxh')
+
+    it "Should return undefined if commit message doesn't have reference to card", ->
+      expect(@trello.getCardId(mock.cards, payload.commits[0])).to.be.undefined
+
 
   describe 'action', ->
-    it 'action'
-  describe 'getCards', ->
-    it 'getCards'
-  describe 'getCardId', ->
-    it 'getCardId'
-  describe 'commentCard', ->
-    it 'commentCard'
+    beforeEach (done)->
+      @commentCardSpy = sinon.spy @trello, 'commentCard'
+      @trelloCards = nock('http://api.trello.com')
+        .filteringPath (path)->
+          '/1/cards'
+        .get('/1/cards')
+        .reply(200, mock.cards)
+        .post('/1/cards',
+          text: 'shakaman: https://github.com/shakaman/OctoPostie/commit/2c2fc2453a785328833d573f838881dd599cdc5c'
+        )
+        .reply(200)
+      @trello.initialize()
+      @trello.action(payload).then ->
+        done()
+
+    afterEach ->
+      @commentCardSpy.restore()
+
+    it 'Should call once commentCard', ->
+      @commentCardSpy.should.have.been.calledOnce
