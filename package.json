@@ -29,12 +29,12 @@
     "grunt-mocha-test": "~0.9.3",
     "sinon-chai": "~2.5.0",
     "proxyquire": "~0.5.2",
-    "expect.js": "~0.3.1",
-    "twit": "~1.1.12"
+    "expect.js": "~0.3.1"
   },
   "dependencies": {
     "express": "3.x",
     "restler": "3.2.0",
-    "q": "~1.0.0"
+    "q": "~1.0.0",
+    "twit": "~1.1.12"
   }
 }
