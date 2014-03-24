@@ -7,6 +7,7 @@ config =
       lists: ":api/boards/:id?members=all&lists=all&key=:key&token=:token"
       cards: ":api/boards/:id/cards/?fields=idShort,shortLink&key=:key&token=:token"
       card: ":api/cards/:id/actions/comments?key=:key&token=:token"
+      moveCard: ":api/cards/:id?key=:key&token=:token"
   projects: [
     {
       name: 'project1'

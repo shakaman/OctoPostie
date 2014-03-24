@@ -12,16 +12,19 @@ class Trello
 
 
   action: (@payload)->
-    if @payload.commits? and @checkValidity()
-      projectName = @payload.repository.name
-      commits = @payload.commits
-      boardId = @getBoardId(projectName)
-      return unless boardId
-      @getCards(boardId).then (cards)=>
-        for commit in commits
-          cardId = @getCardId(cards, commit)
-          continue unless cardId
-          @commentCard(cardId, commit)
+    return unless @payload.commits? and @checkValidity()
+    projectName = @payload.repository.name
+    commits = @payload.commits
+    board = @getBoard(projectName)
+    testListId = @getListId('done', board)
+    return unless board
+    @getCards(board.id).then (cards)=>
+      for commit in commits
+        cardId = @getCardId(cards, commit)
+        continue unless cardId
+        @commentCard(cardId, commit)
+        continue if @parseMove(commit) and testListId
+        @moveCard(cardId, testListId)
 
 
   # Get lists and members for all projects in config
@@ -73,10 +76,28 @@ class Trello
     )
 
 
-  # Retrieve board id using its name
-  getBoardId: (name)->
+  # Retrieve board using its name
+  getBoard: (name)->
     for project in @projects
-      return project.boardId if name is project.name
+      return project if name.toLowerCase() is project.name.toLowerCase()
 
+
+  #
+  getListId: (name, board)->
+    for list in board.lists
+      return list.id if name.toLowerCase() is list.name.toLowerCase()
+
+
+  parseMove: (commit)->
+    commit.message.match(/fix|fixes|close|closes +#[0-9]+/)
+
+
+  # Post to move card to test list
+  moveCard: (cardId, testListId) ->
+    url = @getUrl('moveCard', cardId)
+    rest.put(url,
+      data:
+        idList: testListId
+    )
 
 module.exports = Trello

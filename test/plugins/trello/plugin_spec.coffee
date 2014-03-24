@@ -90,12 +90,21 @@ describe 'Plugin Trello', ->
       @trello.getUrl('card', 'cardId1').should.be.equal(url)
 
 
-  describe 'getBoardId', ->
+  describe 'getBoard', ->
     beforeEach ->
       @trello.initialize()
 
-    it 'Should have good project when i call getBoardId with a name', ->
-      @trello.getBoardId('project1').should.be.equal('boardId1')
+    it 'Should have good project when i call getBoard with a name', ->
+      @trello.getBoard('project1').boardId.should.be.equal('boardId1')
+
+
+  describe 'getListId', ->
+    beforeEach ->
+      @trello.initialize()
+
+    it 'Should have good listId when i call getListId with a name and boardId', ->
+      board = @trello.getBoard('project1')
+      @trello.getListId('done', board).should.be.equal('listdoneboard1')
 
 
   describe 'getCards', ->
@@ -135,6 +144,10 @@ describe 'Plugin Trello', ->
         .reply(200, mock.cards)
         .post('/1/cards',
           text: 'shakaman: https://github.com/shakaman/OctoPostie/commit/2c2fc2453a785328833d573f838881dd599cdc5c'
+        )
+        .reply(200)
+        .put('/1/cards',
+          idList: 'listdoneboard1'
         )
         .reply(200)
       @trello.initialize()
