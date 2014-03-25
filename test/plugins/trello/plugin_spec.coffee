@@ -61,7 +61,7 @@ describe 'Plugin Trello', ->
     it 'Call trello api for each project', ->
       @trello.initialize()
       @trello.projects.should.have.length(2)
-      @trello.projects[0].lists.should.have.length(3)
+      @trello.projects[0].lists.should.have.length(4)
       @trello.projects[0].lists[0].id.should.be.equal('listtodoboard1')
       @trello.projects[1].lists[0].id.should.be.equal('listtodoboard2')
 
@@ -147,7 +147,7 @@ describe 'Plugin Trello', ->
         )
         .reply(200)
         .put('/1/cards',
-          idList: 'listdoneboard1'
+          idList: 'listtestboard1'
         )
         .reply(200)
       @trello.initialize()

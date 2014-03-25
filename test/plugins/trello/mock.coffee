@@ -52,6 +52,14 @@ boards = [
         subscribed: false
       }
       {
+        id: "listtestboard1"
+        name: "Test"
+        closed: false
+        idBoard: "idboard1"
+        pos: 49153
+        subscribed: false
+      }
+      {
         id: "listdoneboard1"
         name: "Done"
         closed: false

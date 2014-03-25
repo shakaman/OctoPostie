@@ -16,9 +16,9 @@ class Trello
     projectName = @payload.repository.name
     commits = @payload.commits
     board = @getBoard(projectName)
-    testListId = @getListId('done', board)
+    testListId = @getListId('test', board)
     return unless board
-    @getCards(board.id).then (cards)=>
+    @getCards(board.boardId).then (cards)=>
       for commit in commits
         cardId = @getCardId(cards, commit)
         continue unless cardId
