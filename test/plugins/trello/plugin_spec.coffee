@@ -44,6 +44,12 @@ describe 'Plugin Trello', ->
     it 'Should call getConfig when initializing', ->
       @configSpy.should.have.been.calledOnce
 
+    it 'idrate each project', ->
+      @trello.projects.should.have.length(2)
+      @trello.projects[0].lists.should.have.length(4)
+      @trello.projects[0].lists[0].id.should.be.equal('listtodoboard1')
+      @trello.projects[1].lists[0].id.should.be.equal('listtodoboard2')
+
 
   describe 'checkValidity', ->
     it "Should return false when payload doesn't contain master", ->
@@ -55,16 +61,6 @@ describe 'Plugin Trello', ->
       @trello.payload =
         ref: 'refs/heads/master'
       @trello.checkValidity().should.be.true
-
-
-  describe 'getConfig', ->
-    it 'Call trello api for each project', ->
-      @trello.initialize()
-      @trello.projects.should.have.length(2)
-      @trello.projects[0].lists.should.have.length(4)
-      @trello.projects[0].lists[0].id.should.be.equal('listtodoboard1')
-      @trello.projects[1].lists[0].id.should.be.equal('listtodoboard2')
-
 
   describe 'getUrl', ->
     beforeEach ->
