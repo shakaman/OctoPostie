@@ -40,7 +40,7 @@ module.exports = (grunt) ->
       test: ['<%= dirs.tmp %>/*']
 
     jshint:
-      back: ['packages.json']
+      back: ['package.json']
 
     coffeelint:
       files: ['Gruntfile.coffee', '<%= dirs.src %>/**/*.coffee', '<%= dirs.test %>/**/*.coffee']
