@@ -6,8 +6,9 @@ class Trello
     # Specific config file for this plugin
     config = require "./config"
 
-    @trello = config.trello
     @projects = config.projects
+    @trelloConfig = config.trello
+    @githubConfig = config.github
     @getConfig()
 
 
@@ -27,7 +28,7 @@ class Trello
         @moveCard(cardId, testListId)
 
 
-  # Get lists and members for all projects in config
+  # get lists and members for all projects in config
   getConfig: ->
     @projects.forEach (project) =>
       url = @getUrl('lists', project.boardId)
@@ -37,18 +38,18 @@ class Trello
 
 
   getUrl: (type, id) ->
-    url = @trello.urls[type]
-    url.replace(':api', @trello.api)
+    url = @trelloConfig.urls[type]
+    url.replace(':api', @trelloConfig.api)
       .replace(':id', id)
-      .replace(':key', @trello.key)
-      .replace(':token', @trello.token)
+      .replace(':key', @trelloConfig.key)
+      .replace(':token', @trelloConfig.token)
 
 
   checkValidity: ->
     @payload.ref.indexOf('master') > 0
 
 
-  # Get all cards for a board
+  # get all cards for a board
   getCards: (boardId) ->
     url = @getUrl('cards', boardId)
     defer = Q.defer()
@@ -89,15 +90,38 @@ class Trello
 
 
   parseMove: (commit)->
-    commit.message.match(/fix|fixes|close|closes +#[0-9]+/)
+    commit.message.match(/fix|fixes|close|closes +#[0-9]+/i)
 
 
   # Post to move card to test list
-  moveCard: (cardId, testListId) ->
+  moveCard: (cardId, testListId)->
     url = @getUrl('moveCard', cardId)
     rest.put(url,
       data:
         idList: testListId
     )
+
+
+  # Load readme from github
+  loadReadme: (commit)->
+    url = "#{@githubConfig.api}/#{commit.repository.owner.name}/#{commit.repository.name}/readme"
+    rest.get(url,
+      data:
+        access_token: @githubConfig.token
+    ).on 'complete', (data)->
+      content = new Buffer(data.content, data.encoding)
+      @searchTrelloUrl(content.toString(), commit.repository.name)
+
+
+  # Search trello url
+  searchTrelloUrl: (content, name)->
+    url = content.match(/https:\/\/trello\.com\/b\/([0-9a-f]+)\//i)
+    return unless url
+    project =
+      name: name
+      boardId: url[1]
+    @projects.push project
+    @getconfig()
+
 
 module.exports = Trello

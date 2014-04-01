@@ -35,7 +35,7 @@ payload =
     {
       id: "2c2fc2453a785328833d573f838881dd599cdc5c"
       distinct: true
-      message: "See #2 : Switch name in gruntfile"
+      message: "Fix #2 : Switch name in gruntfile"
       timestamp: "2014-03-18T21:29:16+01:00"
       url: "https://github.com/shakaman/OctoPostie/commit/2c2fc2453a785328833d573f838881dd599cdc5c"
       author:

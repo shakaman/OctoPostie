@@ -3,7 +3,7 @@ sinon = require 'sinon'
 sinonChai = require 'sinon-chai'
 chai.should()
 chai.use(sinonChai)
-expect = require 'expect.js'
+should = chai.should()
 nock = require 'nock'
 
 proxyquire = require('proxyquire').noCallThru()
@@ -131,7 +131,7 @@ describe 'Plugin Trello', ->
       @trello.getCardId(mock.cards, payload.commits[1]).should.be.equal('EHm8BHxh')
 
     it "Should return undefined if commit message doesn't have reference to card", ->
-      expect(@trello.getCardId(mock.cards, payload.commits[0])).to.be.undefined
+      should.equal(@trello.getCardId(mock.cards, payload.commits[0]), undefined)
 
 
   describe 'action', ->
@@ -159,3 +159,11 @@ describe 'Plugin Trello', ->
 
     it 'Should call once commentCard', ->
       @commentCardSpy.should.have.been.calledOnce
+
+  describe 'parseMove', ->
+    it "Should return nil if commit message does't contain fix|fixes|close|closed", ->
+      should.equal(@trello.parseMove(payload.commits[0]), null)
+
+    it "Should return array if commit message contain fix|fixes|close|closed", ->
+      should.not.equal(@trello.parseMove(payload.commits[1]), null)
+

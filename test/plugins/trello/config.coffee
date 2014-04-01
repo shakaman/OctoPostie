@@ -8,6 +8,9 @@ config =
       cards: ":api/boards/:id/cards/?fields=idShort,shortLink&key=:key&token=:token"
       card: ":api/cards/:id/actions/comments?key=:key&token=:token"
       moveCard: ":api/cards/:id?key=:key&token=:token"
+  github:
+    api: 'https://api.github.com'
+    token: 'your_token'
   projects: [
     {
       name: 'project1'
