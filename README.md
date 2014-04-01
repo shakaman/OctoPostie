@@ -18,6 +18,9 @@ It's simple: `node server/app.js`
 Use your config file to had a plugin..
 They are loaded when you run the app. (aka not hot pluged)
 
+### Interface
+a plugin must implement a isConcern method regarding the payload
+
 ### Trello
 Only commit from master branch are process.
 

@@ -51,16 +51,22 @@ describe 'Plugin Trello', ->
       @trello.projects[1].lists[0].id.should.be.equal('listtodoboard2')
 
 
-  describe 'checkValidity', ->
-    it "Should return false when payload doesn't contain master", ->
-      @trello.payload =
+  describe 'is concern', ->
+    it "when payload doesn't contain master", ->
+      aPayload =
         ref: 'refs/heads/prod'
-      @trello.checkValidity().should.not.be.true
+      @trello.isConcernBy(aPayload).should.not.be.true
 
-    it "Should return true when payload contain master", ->
-      @trello.payload =
+    it "when payload contain master without commits", ->
+      aPayload =
         ref: 'refs/heads/master'
-      @trello.checkValidity().should.be.true
+      @trello.isConcernBy(aPayload).should.be.false
+
+    it "when payload contain master with commits", ->
+      aPayload =
+        ref: 'refs/heads/master'
+        commits: ['']
+      @trello.isConcernBy(aPayload).should.be.true
 
   describe 'getUrl', ->
     beforeEach ->

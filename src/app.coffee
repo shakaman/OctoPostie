@@ -10,7 +10,7 @@ app.use express.urlencoded()
 app.post '/', (req, res) ->
   res.send {}
   payload = req.body
-  plugin.action(payload) for plugin in @plugins
+  plugin.action(payload) for plugin in @plugins when plugin.isConcernBy()
 
 
 # Load config file and initializes plugins

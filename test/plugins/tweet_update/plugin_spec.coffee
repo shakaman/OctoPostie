@@ -28,43 +28,43 @@ describe 'Plugin TweetUpdate', ->
 
   describe 'hasTag', ->
     it "Should return false if payload does't contain tag", ->
-      @TweetUpdate.payload =
+      payload =
         ref: "refs/heads/master"
-      @TweetUpdate.hasTag().should.be.false
+      @TweetUpdate.hasTag(payload).should.be.false
 
     it "Should return true if payload contain tag", ->
-      @TweetUpdate.payload =
+      payload =
         ref: "refs/tags/2.0.2"
-      @TweetUpdate.hasTag().should.be.true
+      @TweetUpdate.hasTag(payload).should.be.true
 
 
   describe 'tagIsValid', ->
     it "Should return false if tag is not match", ->
-      @TweetUpdate.payload =
+      payload =
         ref: "refs/tags/new-version"
-      @TweetUpdate.tagIsValid().should.be.false
+      @TweetUpdate.tagIsValid(payload).should.be.false
 
     it "Should return true if tag match 2.0.2", ->
-      @TweetUpdate.payload =
+      payload =
         ref: "refs/tags/2.0.2"
-      @TweetUpdate.tagIsValid().should.be.true
+      @TweetUpdate.tagIsValid(payload).should.be.true
 
     it "Should return true if tag match v2.0.2", ->
-      @TweetUpdate.payload =
+      payload =
         ref: "refs/tags/v2.0.2"
-      @TweetUpdate.tagIsValid().should.be.true
+      @TweetUpdate.tagIsValid(payload).should.be.true
 
 
   describe 'isPrivate', ->
     it 'Should return false if project is not private', ->
-      @TweetUpdate.payload =
+      payload =
         repository:
           private: false
-      @TweetUpdate.isPrivate().should.be.false
+      @TweetUpdate.isPrivate(payload).should.be.false
 
     it 'Should return true if project is private', ->
-      @TweetUpdate.payload =
+      payload =
         repository:
           private: true
-      @TweetUpdate.isPrivate().should.be.true
+      @TweetUpdate.isPrivate(payload).should.be.true
 

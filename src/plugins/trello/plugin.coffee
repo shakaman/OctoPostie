@@ -13,7 +13,6 @@ class Trello
 
 
   action: (@payload)->
-    return unless @payload.commits? and @checkValidity()
     projectName = @payload.repository.name
     commits = @payload.commits
     board = @getBoard(projectName)
@@ -44,9 +43,8 @@ class Trello
       .replace(':key', @trelloConfig.key)
       .replace(':token', @trelloConfig.token)
 
-
-  checkValidity: ->
-    @payload.ref.indexOf('master') > 0
+  isConcernBy: (payload)->
+    payload.commits? and payload.ref.indexOf('master') > 0
 
 
   # get all cards for a board

@@ -13,19 +13,23 @@ class TweetUpdate
 
 
   action: (@payload)->
-    @tweetUpdate() if @hasTag() and @tagIsValid() and not @isPrivate()
+    @tweetUpdate()
 
 
-  hasTag: ->
-    @payload.ref.indexOf('tags') > 0
+  isConcernBy: (payload)->
+    @hasTag(payload) and @tagIsValid(payload) and not @isPrivate(payload)
 
 
-  tagIsValid: ->
-    @payload.ref.match(@regex)?.length > 0
+  hasTag: (payload)->
+    payload.ref.indexOf('tags') > 0
 
 
-  isPrivate: ->
-    @payload.repository.private
+  tagIsValid: (payload)->
+    payload.ref.match(@regex)?.length > 0
+
+
+  isPrivate: (payload)->
+    payload.repository.private
 
 
   tweetUpdate: ->
