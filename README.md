@@ -15,9 +15,12 @@ You can show payload on https://gist.github.com/gjtorikian/5171861
 It's simple: `node server/app.js`
 
 ## Plugins
-
 Use your config file to had a plugin..
 They are loaded when you run the app. (aka not hot pluged)
+
+### Trello
+Only commit from master branch are process.
+
 
 ## Credits
 ♡2014 by @shakaman and @chpill. Copying is an act of love. Please copy and share.
