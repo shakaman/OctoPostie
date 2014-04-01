@@ -48,7 +48,7 @@ module.exports = (grunt) ->
         no_backticks:
           level: 'warn'
         max_line_length:
-          level: 'warn'
+          level: 'ignore'
 
     coffee:
       app:
