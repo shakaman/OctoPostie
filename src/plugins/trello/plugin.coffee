@@ -1,4 +1,3 @@
-Q = require 'q'
 rest = require 'restler'
 
 class Trello
@@ -12,19 +11,21 @@ class Trello
     @getConfig()
 
 
-  action: (@payload)->
+  action: (@payload, cb)->
     projectName = @payload.repository.name
     commits = @payload.commits
     board = @getBoard(projectName)
     testListId = @getListId('test', board)
     return unless board
-    @getCards(board.boardId).then (cards)=>
+    @getCards board.boardId, (err, cards)=>
+      return cb(err) if err
       for commit in commits
         cardId = @getCardId(cards, commit)
         continue unless cardId
         @commentCard(cardId, commit)
         continue if @parseMove(commit) and testListId
         @moveCard(cardId, testListId)
+      cb()
 
 
   # get lists and members for all projects in config
@@ -48,12 +49,11 @@ class Trello
 
 
   # get all cards for a board
-  getCards: (boardId) ->
+  getCards: (boardId, cb) ->
     url = @getUrl('cards', boardId)
-    defer = Q.defer()
-    rest.get(url).on 'complete', (data) ->
-      defer.resolve data
-    defer.promise
+    rest.get(url).on 'complete', (data)->
+      return cb data if data instanceof Error
+      cb null, data
 
 
   # Retrieve card id from commit message
