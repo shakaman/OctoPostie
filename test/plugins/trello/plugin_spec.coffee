@@ -117,7 +117,7 @@ describe 'Plugin Trello', ->
         .get('/1/cards')
         .reply(200, mock.cards)
       @trello.initialize()
-      @promise = @trello.getCards('boardId1').then (cards)=>
+      @promise = @trello.getCards 'boardId1', (err, cards)=>
         @cards = cards
         done()
 
@@ -153,8 +153,7 @@ describe 'Plugin Trello', ->
         )
         .reply(200)
       @trello.initialize()
-      @trello.action(payload).then ->
-        done()
+      @trello.action payload, done
 
     afterEach ->
       @commentCardSpy.restore()

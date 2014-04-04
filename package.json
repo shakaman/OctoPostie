@@ -34,7 +34,6 @@
   "dependencies": {
     "express": "3.x",
     "restler": "3.2.0",
-    "q": "~1.0.0",
     "twit": "~1.1.12",
     "github": "~0.1.15"
   }
