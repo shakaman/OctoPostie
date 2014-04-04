@@ -18,14 +18,14 @@ class Trello
     testListId = @getListId('test', board)
     return unless board
     @getCards board.boardId, (err, cards)=>
-      return cb(err) if err
+      return cb?(err) if err
       for commit in commits
         cardId = @getCardId(cards, commit)
         continue unless cardId
         @commentCard(cardId, commit)
         continue if @parseMove(commit) and testListId
         @moveCard(cardId, testListId)
-      cb()
+      cb?()
 
 
   # get lists and members for all projects in config
