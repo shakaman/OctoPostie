@@ -1,4 +1,4 @@
-# OctoPostie [![Built with Grunt](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com/) [![Build Status](https://travis-ci.org/shakaman/OctoPostie.png)](https://travis-ci.org/shakaman/OctoPostie) [![Dependency Status](https://david-dm.org/shakaman/OctoPostie.png)](https://david-dm.org/shakaman/OctoPostie) [![devDependency Status](https://david-dm.org/shakaman/OctoPostie/dev-status.png)](https://david-dm.org/shakaman/OctoPostie#info=devDependencies)
+# OctoPostie [![Built with Grunt](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com/) [![Build Status](https://travis-ci.org/shakaman/OctoPostie.png?branch=master)](https://travis-ci.org/shakaman/OctoPostie) [![Dependency Status](https://david-dm.org/shakaman/OctoPostie.png)](https://david-dm.org/shakaman/OctoPostie) [![devDependency Status](https://david-dm.org/shakaman/OctoPostie/dev-status.png)](https://david-dm.org/shakaman/OctoPostie#info=devDependencies)
 ================
 
 Simple app to bind github's commit to various services.
