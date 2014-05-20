@@ -23,7 +23,7 @@ class Trello
         cardId = @getCardId(cards, commit)
         continue unless cardId
         @commentCard(cardId, commit)
-        continue if @parseMove(commit) and testListId
+        continue unless @parseMove(commit) and testListId
         @moveCard(cardId, testListId)
       cb()
 
