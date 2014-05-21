@@ -15,15 +15,14 @@ You can show payload on https://gist.github.com/gjtorikian/5171861
 It's simple: `node server/app.js`
 
 ## Plugins
-Use your config file to had a plugin..
+Use your config file to add a plugin..
 They are loaded when you run the app. (aka not hot pluged)
 
 ### Interface
-a plugin must implement a isConcern method regarding the payload
+a plugin must implement an isConcern method regarding the payload
 
 ### Trello
-Only commit from master branch are process.
-
+Only the commits from master branch are processed.
 
 ## Credits
 ♡2014 by @shakaman and @chpill. Copying is an act of love. Please copy and share.
