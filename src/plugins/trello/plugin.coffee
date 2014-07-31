@@ -68,7 +68,7 @@ class Trello
   # Post comment on trello card with commit link
   commentCard: (cardId, commit) ->
     url = @getUrl('card', cardId)
-    msg = "#{commit.committer.username}: #{commit.url}"
+    msg = "#{commit.committer.username}: #{commit.message} #{commit.url}"
     rest.post(url,
       data:
         text: msg
