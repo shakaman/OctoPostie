@@ -1,7 +1,7 @@
 {
   "name": "OctoPostie",
   "description": "Github webhook to various services",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "private": true,
   "author": [
     "shakaman",
@@ -11,30 +11,30 @@
     "test": "mocha --timeout 3000 --compilers coffee:coffee-script/register test/**/*.coffee"
   },
   "devDependencies": {
-    "grunt": "~0.4.1",
-    "grunt-coffeelint": "~0.0.7",
-    "grunt-contrib-clean": "~0.5.0",
-    "grunt-contrib-coffee": "~0.10.1",
+    "chai": "~1.9.2",
+    "coffee-script": "~1.8.0",
+    "expect.js": "~0.3.1",
+    "grunt": "~0.4.5",
+    "grunt-coffeelint": "~0.0.13",
+    "grunt-contrib-clean": "~0.6.0",
+    "grunt-contrib-coffee": "~0.12.0",
+    "grunt-contrib-copy": "~0.7.0",
     "grunt-contrib-jshint": "~0.10.0",
-    "grunt-contrib-copy": "~0.5.0",
     "grunt-contrib-watch": "~0.6.1",
-    "grunt-mincer": "~0.6.0",
-    "grunt-notify": "~0.2.17",
-    "coffee-script": "~1.7.1",
+    "grunt-mincer": "^0.6.0",
+    "grunt-mocha-test": "~0.12.1",
+    "grunt-notify": "~0.3.1",
     "matchdep": "~0.3.0",
-    "supertest": "~0.11.0",
-    "nock": "~0.28.2",
-    "mocha": "~1.18.2",
-    "chai": "~1.9.1",
-    "grunt-mocha-test": "~0.10.2",
-    "sinon-chai": "~2.5.0",
-    "proxyquire": "~0.6.0",
-    "expect.js": "~0.3.1"
+    "mocha": "~1.21.5",
+    "nock": "~0.48.1",
+    "proxyquire": "~1.0.1",
+    "sinon-chai": "~2.6.0",
+    "supertest": "~0.14.0"
   },
   "dependencies": {
     "express": "~3.x",
     "restler": "3.2.2",
     "twit": "~1.1.4",
-    "github": "~0.1.16"
+    "github": "~0.2.2"
   }
 }
