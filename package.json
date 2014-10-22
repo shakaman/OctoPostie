@@ -32,9 +32,10 @@
     "supertest": "~0.14.0"
   },
   "dependencies": {
+    "body-parser": "^1.9.0",
     "express": "~3.x",
+    "github": "~0.2.2",
     "restler": "3.2.2",
-    "twit": "~1.1.4",
-    "github": "~0.2.2"
+    "twit": "~1.1.4"
   }
 }
