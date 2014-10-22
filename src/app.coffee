@@ -1,10 +1,11 @@
 express = require 'express'
+bodyParser = require 'body-parser'
 fs = require 'fs'
 
 
 app = express()
-app.use express.json()
-app.use express.urlencoded()
+app.use bodyParser.urlencoded(extended: false)
+app.use bodyParser.json()
 
 
 app.post '/', (req, res) ->
