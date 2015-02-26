@@ -60,6 +60,7 @@ class Trello
   getCardId: (cards, commit) ->
     id = commit.message.match(/#([0-9]+)/)
     return unless id
+    return if commit.message.indexOf("Merge pull request ##{id} ") != -1
     id = parseInt(id[1], 10)
     for card in cards
       return card.shortLink if card.idShort is id
